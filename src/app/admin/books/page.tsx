@@ -114,23 +114,26 @@ export default function AdminBooksPage() {
 
   if (authLoading || !user || user.role !== 'admin') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-50">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin" />
-          <p className="text-zinc-500">Loading...</p>
+      <div className="min-h-screen flex items-center justify-center bg-zinc-950 relative">
+        <div className="absolute inset-0 dot-pattern opacity-20" />
+        <div className="flex flex-col items-center gap-4 relative z-10">
+          <div className="w-10 h-10 border-2 border-zinc-800 border-t-zinc-100 rounded-full animate-spin" />
+          <p className="text-zinc-500 text-sm">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      <header className="bg-white border-b border-zinc-200 sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div className="min-h-screen bg-zinc-950 relative">
+      <div className="absolute inset-0 dot-pattern opacity-10" />
+      
+      <header className="relative z-10 border-b border-zinc-800/50 backdrop-blur-xl sticky top-0">
+        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <a href="/dashboard" className="text-zinc-500 hover:text-zinc-900 transition-colors">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+            <a href="/dashboard" className="p-2 hover:bg-zinc-900 rounded-lg transition-colors">
+              <svg className="w-5 h-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
               </svg>
             </a>
             <div>
@@ -138,13 +141,10 @@ export default function AdminBooksPage() {
               <p className="text-sm text-zinc-500">Add, edit, or delete books in the library</p>
             </div>
           </div>
-          <button
-            onClick={openAddModal}
-            className="btn-primary text-sm"
-          >
+          <button onClick={openAddModal} className="btn-primary text-sm">
             <span className="flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
               Add Book
             </span>
@@ -152,22 +152,22 @@ export default function AdminBooksPage() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-8">
+      <main className="relative z-10 max-w-6xl mx-auto px-6 py-8">
         {error && (
-          <div className="mb-6 p-4 bg-zinc-100 text-zinc-700 text-sm rounded-lg border border-zinc-200">
+          <div className="mb-6 p-4 bg-red-900/20 border border-red-900/30 text-red-400 text-sm rounded-lg">
             {error}
           </div>
         )}
 
         {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="w-8 h-8 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin" />
+          <div className="card p-8 text-center">
+            <div className="w-10 h-10 border-2 border-zinc-800 border-t-zinc-100 rounded-full animate-spin mx-auto" />
           </div>
         ) : books.length === 0 ? (
           <div className="card p-12 text-center">
-            <div className="w-16 h-16 bg-zinc-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            <div className="w-16 h-16 bg-zinc-900 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
             <p className="text-zinc-500 mb-4">No books in the library yet</p>
@@ -179,38 +179,38 @@ export default function AdminBooksPage() {
           <div className="card overflow-hidden">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-zinc-200">
-                  <th className="text-left text-sm font-medium text-zinc-500 px-6 py-4">Title</th>
-                  <th className="text-left text-sm font-medium text-zinc-500 px-6 py-4">Author</th>
-                  <th className="text-left text-sm font-medium text-zinc-500 px-6 py-4">ISBN</th>
-                  <th className="text-left text-sm font-medium text-zinc-500 px-6 py-4">Available</th>
-                  <th className="text-right text-sm font-medium text-zinc-500 px-6 py-4">Actions</th>
+                <tr className="border-b border-zinc-800">
+                  <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-4">Title</th>
+                  <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-4">Author</th>
+                  <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-4">ISBN</th>
+                  <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-4">Available</th>
+                  <th className="text-right text-xs font-medium text-zinc-500 uppercase tracking-wider px-6 py-4">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {books.map((book) => (
-                  <tr key={book.id} className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors">
+                  <tr key={book.id} className="border-b border-zinc-800/50 hover:bg-zinc-900/30 transition-colors">
                     <td className="px-6 py-4">
                       <div className="font-medium">{book.title}</div>
-                      {book.category && <div className="text-xs text-zinc-400 mt-1">{book.category}</div>}
+                      {book.category && <div className="text-xs text-zinc-500 mt-1">{book.category}</div>}
                     </td>
-                    <td className="px-6 py-4 text-zinc-600">{book.author}</td>
+                    <td className="px-6 py-4 text-zinc-400">{book.author}</td>
                     <td className="px-6 py-4 text-zinc-500 text-sm">{book.isbn || '-'}</td>
                     <td className="px-6 py-4">
-                      <span className={`text-sm ${book.available_copies > 0 ? 'text-zinc-900' : 'text-red-600'}`}>
+                      <span className={`text-sm ${book.available_copies > 0 ? 'text-zinc-300' : 'text-red-400'}`}>
                         {book.available_copies} / {book.total_copies}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <button
                         onClick={() => openEditModal(book)}
-                        className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors mr-4"
+                        className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors mr-4"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(book.id)}
-                        className="text-sm text-zinc-500 hover:text-red-600 transition-colors"
+                        className="text-sm text-zinc-500 hover:text-red-400 transition-colors"
                       >
                         Delete
                       </button>
@@ -224,18 +224,18 @@ export default function AdminBooksPage() {
       </main>
 
       {showModal && (
-        <div className="fixed inset-0 bg-zinc-900/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full animate-scale-in">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+          <div className="bg-zinc-900 rounded-2xl p-6 max-w-md w-full border border-zinc-800 animate-scale-in">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold">
                 {editingBook ? 'Edit Book' : 'Add New Book'}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-zinc-400 hover:text-zinc-600 transition-colors"
+                className="text-zinc-500 hover:text-zinc-300 transition-colors"
               >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
