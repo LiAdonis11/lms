@@ -113,79 +113,104 @@ export default function AdminBooksPage() {
   };
 
   if (authLoading || !user || user.role !== 'admin') {
-    return <div className="p-8">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-zinc-50">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-8 h-8 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin" />
+          <p className="text-zinc-500">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <div className="min-h-screen bg-zinc-50">
+      <header className="bg-white border-b border-zinc-200 sticky top-0 z-10">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <a href="/dashboard" className="text-blue-600 hover:underline">
-              Dashboard
+            <a href="/dashboard" className="text-zinc-500 hover:text-zinc-900 transition-colors">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+              </svg>
             </a>
-            <span className="text-gray-500">/</span>
-            <span className="font-medium">Manage Books</span>
+            <div>
+              <h1 className="font-semibold text-lg">Manage Books</h1>
+              <p className="text-sm text-zinc-500">Add, edit, or delete books in the library</p>
+            </div>
           </div>
           <button
             onClick={openAddModal}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="btn-primary text-sm"
           >
-            Add Book
+            <span className="flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Add Book
+            </span>
           </button>
         </div>
-      </nav>
+      </header>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-6xl mx-auto px-6 py-8">
         {error && (
-          <div className="mb-4 p-3 bg-red-50 text-red-600 rounded">{error}</div>
+          <div className="mb-6 p-4 bg-zinc-100 text-zinc-700 text-sm rounded-lg border border-zinc-200">
+            {error}
+          </div>
         )}
 
         {loading ? (
-          <div className="text-center py-8">Loading...</div>
+          <div className="flex items-center justify-center py-20">
+            <div className="w-8 h-8 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin" />
+          </div>
         ) : books.length === 0 ? (
-          <div className="text-center py-8 text-gray-600">No books found</div>
+          <div className="card p-12 text-center">
+            <div className="w-16 h-16 bg-zinc-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <p className="text-zinc-500 mb-4">No books in the library yet</p>
+            <button onClick={openAddModal} className="btn-primary text-sm">
+              Add your first book
+            </button>
+          </div>
         ) : (
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Title
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Author
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    ISBN
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Available
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                    Actions
-                  </th>
+          <div className="card overflow-hidden">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-zinc-200">
+                  <th className="text-left text-sm font-medium text-zinc-500 px-6 py-4">Title</th>
+                  <th className="text-left text-sm font-medium text-zinc-500 px-6 py-4">Author</th>
+                  <th className="text-left text-sm font-medium text-zinc-500 px-6 py-4">ISBN</th>
+                  <th className="text-left text-sm font-medium text-zinc-500 px-6 py-4">Available</th>
+                  <th className="text-right text-sm font-medium text-zinc-500 px-6 py-4">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody>
                 {books.map((book) => (
-                  <tr key={book.id}>
-                    <td className="px-6 py-4">{book.title}</td>
-                    <td className="px-6 py-4">{book.author}</td>
-                    <td className="px-6 py-4">{book.isbn || '-'}</td>
+                  <tr key={book.id} className="border-b border-zinc-100 hover:bg-zinc-50 transition-colors">
                     <td className="px-6 py-4">
-                      {book.available_copies} / {book.total_copies}
+                      <div className="font-medium">{book.title}</div>
+                      {book.category && <div className="text-xs text-zinc-400 mt-1">{book.category}</div>}
+                    </td>
+                    <td className="px-6 py-4 text-zinc-600">{book.author}</td>
+                    <td className="px-6 py-4 text-zinc-500 text-sm">{book.isbn || '-'}</td>
+                    <td className="px-6 py-4">
+                      <span className={`text-sm ${book.available_copies > 0 ? 'text-zinc-900' : 'text-red-600'}`}>
+                        {book.available_copies} / {book.total_copies}
+                      </span>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <button
                         onClick={() => openEditModal(book)}
-                        className="text-blue-600 hover:underline mr-4"
+                        className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors mr-4"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(book.id)}
-                        className="text-red-600 hover:underline"
+                        className="text-sm text-zinc-500 hover:text-red-600 transition-colors"
                       >
                         Delete
                       </button>
@@ -196,111 +221,98 @@ export default function AdminBooksPage() {
             </table>
           </div>
         )}
-      </div>
+      </main>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full">
-            <h2 className="text-xl font-semibold mb-4">
-              {editingBook ? 'Edit Book' : 'Add Book'}
-            </h2>
+        <div className="fixed inset-0 bg-zinc-900/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full animate-scale-in">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold">
+                {editingBook ? 'Edit Book' : 'Add New Book'}
+              </h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-zinc-400 hover:text-zinc-600 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
             <form onSubmit={handleSave}>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Title *
-                </label>
-                <input
-                  type="text"
-                  value={formData.title}
-                  onChange={(e) =>
-                    setFormData({ ...formData, title: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
-                  required
-                />
+              <div className="space-y-4">
+                <div>
+                  <label className="label">Title *</label>
+                  <input
+                    type="text"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    className="input"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="label">Author *</label>
+                  <input
+                    type="text"
+                    value={formData.author}
+                    onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                    className="input"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="label">ISBN</label>
+                  <input
+                    type="text"
+                    value={formData.isbn}
+                    onChange={(e) => setFormData({ ...formData, isbn: e.target.value })}
+                    className="input"
+                  />
+                </div>
+                <div>
+                  <label className="label">Category</label>
+                  <input
+                    type="text"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="input"
+                  />
+                </div>
+                <div>
+                  <label className="label">Total Copies</label>
+                  <input
+                    type="number"
+                    value={formData.total_copies}
+                    onChange={(e) => setFormData({ ...formData, total_copies: parseInt(e.target.value) || 1 })}
+                    className="input"
+                    min="1"
+                  />
+                </div>
+                <div>
+                  <label className="label">Description</label>
+                  <textarea
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    className="input min-h-[80px]"
+                    rows={3}
+                  />
+                </div>
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Author *
-                </label>
-                <input
-                  type="text"
-                  value={formData.author}
-                  onChange={(e) =>
-                    setFormData({ ...formData, author: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  ISBN
-                </label>
-                <input
-                  type="text"
-                  value={formData.isbn}
-                  onChange={(e) =>
-                    setFormData({ ...formData, isbn: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Category
-                </label>
-                <input
-                  type="text"
-                  value={formData.category}
-                  onChange={(e) =>
-                    setFormData({ ...formData, category: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Total Copies
-                </label>
-                <input
-                  type="number"
-                  value={formData.total_copies}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      total_copies: parseInt(e.target.value) || 1,
-                    })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
-                  min="1"
-                />
-              </div>
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Description
-                </label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
-                  rows={3}
-                />
-              </div>
-              <div className="flex gap-4">
+              
+              <div className="flex gap-3 mt-6">
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                  className="btn-primary flex-1"
                 >
-                  {saving ? 'Saving...' : 'Save'}
+                  {saving ? 'Saving...' : editingBook ? 'Save Changes' : 'Add Book'}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded hover:bg-gray-50"
+                  className="btn-secondary flex-1"
                 >
                   Cancel
                 </button>
